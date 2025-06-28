@@ -1,0 +1,119 @@
+# Archaeological Detection Pipeline Configuration
+# This file controls all parameters for the AI-powered archaeological site detection
+# system. The pipeline analyzes deforestation patterns, satellite imagery, and 
+# elevation data to identify potential archaeological sites in the Amazon rainforest.
+
+# Study Area Definition
+# Defines the geographic bounds for archaeological analysis
+study_area:
+  name: "Acre"  # Region name for reference and output labeling
+  bounds:
+    # Geographic bounding box in decimal degrees (WGS84)
+    min_lon: -68.5   # Western boundary (longitude)
+    max_lon: -67.5   # Eastern boundary (longitude)  
+    min_lat: -10.6   # Southern boundary (latitude)
+    max_lat: -9.6    # Northern boundary (latitude)
+    # Note: This covers approximately 12,100 km² in Acre state, Brazil
+    # Known for significant pre-Columbian archaeological activity
+
+# Deforestation Analysis Parameters (Stage 1)
+# Controls how PRODES deforestation data is analyzed for archaeological potential
+deforestation:
+  # Temporal filtering for optimal archaeological visibility
+  start_year: 2010      # Begin analysis from this year
+  end_year: 2015        # End analysis at this year
+  min_age_years: 10     # Minimum years since deforestation for site visibility
+  max_age_years: 15     # Maximum years to maintain archaeological signal clarity
+  
+  # Size filtering for archaeological features
+  min_size_ha: 2.5      # Minimum area in hectares (filters noise)
+  max_size_ha: 300      # Maximum area in hectares (filters large industrial clearing)
+  
+  # Shape filtering for human modification indicators
+  max_bbox_ratio: 3     # Maximum length/width ratio (filters linear features)
+  
+  # Optimal parameters for archaeological sites based on literature
+  optimal_size_min_ha: 3    # Lower bound of optimal archaeological site size
+  optimal_size_max_ha: 20   # Upper bound of optimal archaeological site size
+  optimal_timing_min_years: 4  # Minimum years for optimal archaeological visibility
+  optimal_timing_max_years: 6  # Maximum years before vegetation recovery obscures features
+
+# Sentinel-2 Satellite Data Download Configuration (Stage 2)
+# Controls acquisition of satellite imagery for NDVI analysis
+sentinel_download:
+  cloud_cover_threshold: 75    # Maximum acceptable cloud cover percentage
+  temporal_preference: ["dry_season"]  # Prefer dry season for better visibility
+  product_preference: "L2A"    # Use Level-2A (atmospherically corrected) products
+  max_candidates: 25           # Maximum number of deforestation sites to analyze
+  buffer_degrees: 0.003        # Geographic buffer around sites (≈300m)
+
+# Sentinel-2 NDVI Analysis Configuration (Stage 2)
+# Controls vegetation pattern detection and geometric analysis
+sentinel_analysis:
+  # Base parameters for all analysis
+  base_params:
+    cloud_cover_threshold: 70     # Cloud filtering for analysis
+    min_pattern_pixels: 6         # Minimum pattern size in pixels
+    max_pattern_hectares: 12.0    # Maximum pattern size in hectares
+  
+  # Parameter grid for optimization across different site types
+  parameter_grid:
+    # NDVI contrast thresholds for detecting vegetation anomalies
+    ndvi_contrast_threshold: [0.05, 0.08, 0.12]  # Low, medium, high sensitivity
+    # Geometric regularity thresholds for archaeological features
+    geometry_threshold: [0.35, 0.50, 0.65]       # Permissive, moderate, strict
+    # Pattern size filters for different archaeological feature scales
+    min_pattern_pixels: [5, 7, 9]                # Small, medium, large features
+  
+  # Physical size constraints for archaeological features
+  min_pattern_diameter_m: 25    # Minimum detectable feature diameter (meters)
+  max_pattern_diameter_m: 250   # Maximum analyzed feature diameter (meters)
+
+# FABDEM Elevation Validation Configuration (Stage 3)
+# Controls bare-earth elevation analysis for archaeological feature validation
+dem_validation:
+  # Spatial analysis parameters
+  buffer_distance_m: 100        # Analysis buffer around detected patterns
+  
+  # Elevation signature thresholds for archaeological features
+  elevation_std_threshold: 0.4      # Minimum elevation standard deviation (meters)
+  elevation_range_threshold: 1.5    # Minimum elevation range for earthwork detection
+  roughness_threshold: 0.25         # Terrain roughness indicator for construction
+  
+  # Quality control parameters
+  min_pixels: 4                     # Minimum pixels for reliable statistics
+  max_elevation_range: 15.0         # Maximum elevation range (filters extreme topography)
+  min_elevation_range: 0.3          # Minimum elevation range (filters flat areas)
+  patterns_to_validate: 35          # Maximum patterns to process per run
+  
+  # Contour analysis for detailed topographic mapping
+  contour_interval: 0.3             # Primary contour interval (meters)
+  detailed_interval: 0.1            # Detailed contour interval for complex features
+  map_buffer_distance: 300          # Buffer for topographic context mapping
+
+# File Paths and Directory Structure
+# Defines the organization of input data and output results
+paths:
+  # Input data locations
+  input_gpkg: "data/input/prodes_amazonia_legal.gpkg"    # PRODES deforestation data
+  input_dem_dir: "data/input/FABDEM"                     # FABDEM elevation data directory
+  
+  # Stage output directories
+  stage1_dir: "data/stage1"                              # Deforestation analysis results
+  stage2_dir: "data/stage2"                              # Sentinel-2 analysis results
+  stage3_dir: "data/stage3"                              # Final validation results
+  
+  # Specific output files
+  deforestation_candidates: "data/stage1/archaeological_candidates.csv"
+  sentinel_queries: "data/stage1/sentinel2_queries.json"
+  downloaded_data: "data/stage2/downloads"
+  analysis_results: "data/stage2/analysis"
+  final_sites: "data/stage3/final_archaeological_sites.csv"
+
+# Configuration Notes:
+# 1. All thresholds are based on archaeological literature and testing
+# 2. Geographic coordinates use WGS84 decimal degrees
+# 3. Areas are specified in hectares for archaeological compatibility
+# 4. Distances use meters for precision in archaeological contexts
+# 5. Temporal parameters account for vegetation recovery cycles
+# 6. Multi-parameter grids enable optimization across diverse site types
