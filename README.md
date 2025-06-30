@@ -10,6 +10,18 @@ This pipeline uses AI and remote sensing to detect potential archaeological site
 - FABDEM elevation validation for subsurface feature confirmation
 - OpenAI GPT integration for contextual analysis and interpretation
 
+## Pipeline Workflow
+
+The complete archaeological detection workflow consists of four main stages:
+
+![Pipeline Workflow - Stage 1](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow01.png)
+
+![Pipeline Workflow - Stage 2](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow02.png)
+
+![Pipeline Workflow - Stage 3](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow03.png)
+
+![Pipeline Workflow - Final Results](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow04.png)
+
 ## Quick Start
 
 ### 1. Installation
@@ -193,6 +205,27 @@ OPENAI_API_KEY=sk-your-api-key-here
 - Stage 2: 15 NDVI pattern detections
 - Stage 3: 5-10 validated archaeological sites
 
+![Interactive Map - All Detected Sites](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/interactive_map.png)
+
+### Top 5 Archaeological Discoveries
+
+Our AI-powered pipeline successfully identified several high-confidence archaeological sites. Here are the top 5 discoveries:
+
+#### Site 01 - Circular Earthwork Complex
+![Site 01](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/site01.png)
+
+#### Site 02 - Rectangular Platform Structure
+![Site 02](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/site02.png)
+
+#### Site 03 - Linear Defensive Feature
+![Site 03](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/site03.png)
+
+#### Site 04 - Complex Geometric Pattern
+![Site 04](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/site04.png)
+
+#### Site 05 - Multi-Component Settlement
+![Site 05](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/site05.png)
+
 **Checkpoint Compliance:**
 - Exactly 5 anomaly footprints with coordinates
 - Single best site with comprehensive evidence
@@ -227,3 +260,26 @@ OPENAI_API_KEY=sk-your-api-key-here
 3. **Validate Results**: Review output files and interactive maps
 4. **Field Planning**: Use coordinates for ground-truth validation
 5. **Research**: Analyze patterns and prepare academic documentation
+
+## Technical Architecture
+
+The pipeline implements a three-stage archaeological detection workflow:
+
+1. **Stage 1 - Deforestation Analysis**: Identifies optimal areas for archaeological visibility through systematic analysis of TerraBrasilis PRODES data, applying temporal, spatial, and geometric filters to find areas where ancient settlements might be revealed.
+
+2. **Stage 2 - Satellite Analysis**: Downloads and processes Sentinel-2 imagery to calculate NDVI patterns that indicate subsurface archaeological features through vegetation anomalies and geometric patterns.
+
+3. **Stage 3 - Elevation Validation**: Uses FABDEM bare-earth elevation data to validate potential sites through statistical analysis of elevation signatures and terrain characteristics.
+
+Each stage feeds into OpenAI GPT models for contextual interpretation and evidence synthesis, creating a comprehensive AI-enhanced archaeological discovery system.
+
+## Scientific Impact
+
+This pipeline represents a breakthrough in archaeological methodology by:
+
+- **Scaling Discovery**: Enables systematic exploration of previously inaccessible Amazon regions
+- **AI Integration**: Demonstrates practical application of machine learning for heritage preservation
+- **Community Partnership**: Supports indigenous communities in documenting cultural landscapes
+- **Methodological Innovation**: Creates reproducible framework applicable to global archaeological research
+
+The results contribute to understanding pre-Columbian civilizations while respecting indigenous rights and promoting collaborative research practices.
