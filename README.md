@@ -17,7 +17,7 @@ wangzifeng157@gmail.com
 
 **Cite this repo if it helps you in your work:**
 - APA: 
-"Li, L., & Wang, Z. (2025). DualVectorFoil-AI-Archaeology (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.1234"
+"Li, L., & Wang, Z. (2025). DualVectorFoil-AI-Archaeology (Version 1.0.0) [Computer software]. [https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/tree/main]"
 
 - Bibtex:
 @software{Li_DualVectorFoil-AI-Archaeology_2025,
