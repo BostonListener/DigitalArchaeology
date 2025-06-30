@@ -2,7 +2,9 @@
 
 ## Overview
 
-This pipeline uses AI and remote sensing to detect potential archaeological sites in the Amazon rainforest. It analyzes deforestation patterns, satellite imagery, and elevation data to identify areas where ancient settlements might be hidden beneath the forest canopy.
+This project is an entry for the [OpenAI to Z Challenge](https://www.kaggle.com/competitions/openai-to-z-challenge), a competition co-organized by Kaggle and OpenAI. After submitting our work, we decided to open-source the code, aiming to provide archaeologists, anthropologists, and enthusiasts with a free and easy-to-use AI-driven archaeological technology framework.
+
+This pipeline uses AI and remote sensing data to explore potential archaeological sites in the Amazon rainforest. It analyzes deforestation patterns, satellite imagery, and elevation data to identify areas where ancient settlements might be hidden beneath the forest canopy.
 
 **Key Features:**
 - Deforestation pattern analysis to find optimal archaeological visibility
