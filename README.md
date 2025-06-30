@@ -12,7 +12,7 @@ This pipeline uses AI and remote sensing to detect potential archaeological site
 
 ## Pipeline Workflow
 
-The complete archaeological detection workflow consists of four main stages:
+The complete archaeological detection workflow consists of three main stages:
 
 ![Pipeline Workflow - Stage 1](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow01.png)
 
@@ -229,7 +229,6 @@ Our AI-powered pipeline successfully identified several high-confidence archaeol
 **Checkpoint Compliance:**
 - Exactly 5 anomaly footprints with coordinates
 - Single best site with comprehensive evidence
-- 2-page presentation content for live demonstration
 
 ## Troubleshooting
 
