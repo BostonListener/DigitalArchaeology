@@ -12,14 +12,14 @@ This pipeline uses AI and remote sensing data to explore potential archaeologica
 - FABDEM elevation validation for subsurface feature confirmation
 - OpenAI GPT integration for contextual analysis and interpretation
 
-Welcome to contact us if you have any questions or ideas via the email below:
+Welcome to contact us if you have any questions or ideas via the email below:\
 wangzifeng157@gmail.com
 
 **Cite this repo if it helps you in your work:**
-APA: 
+- APA: 
 "Li, L., & Wang, Z. (2025). DualVectorFoil-AI-Archaeology (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.1234"
 
-Bibtex:
+- Bibtex:
 @software{Li_DualVectorFoil-AI-Archaeology_2025,
 author = {Li, Linduo and Wang, Zifeng},
 doi = {10.5281/zenodo.1234},
