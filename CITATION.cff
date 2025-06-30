@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this repo, please cite it as below."
+authors:
+- family-names: "Li"
+  given-names: "Linduo"
+- family-names: "Wang"
+  given-names: "Zifeng"
+  orcid: "https://orcid.org/0000-0002-3849-2333"
+title: "DualVectorFoil-AI-Archaeology"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2025-06-30
+url: "https://github.com/BostonListener/DualVectorFoil-AI-Archaeology"
