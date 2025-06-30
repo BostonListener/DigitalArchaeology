@@ -294,7 +294,7 @@ Each stage feeds into OpenAI GPT models for contextual interpretation and eviden
 
 ## Scientific Impact
 
-This pipeline represents a breakthrough in archaeological methodology by:
+This pipeline represents the revolution of archaeological methodology in this AI era by:
 
 - **Scaling Discovery**: Enables systematic exploration of previously inaccessible Amazon regions
 - **AI Integration**: Demonstrates practical application of machine learning for heritage preservation
