@@ -12,6 +12,9 @@ This pipeline uses AI and remote sensing data to explore potential archaeologica
 - FABDEM elevation validation for subsurface feature confirmation
 - OpenAI GPT integration for contextual analysis and interpretation
 
+Welcome to contact us if you have any questions or ideas via the email below:
+wangzifeng157@gmail.com
+
 ## Pipeline Workflow
 
 The complete archaeological detection workflow consists of three main stages:
@@ -284,3 +287,11 @@ This pipeline represents a breakthrough in archaeological methodology by:
 - **Methodological Innovation**: Creates reproducible framework applicable to global archaeological research
 
 The results contribute to understanding pre-Columbian civilizations while respecting indigenous rights and promoting collaborative research practices.
+
+## Acknowledgement
+
+We would like to express our sincere gratitude to our team members who contributed their valuable expertise in archaeology and anthropology:
+
+- **Yifan Wu**: MS at UCL, Central Asian Studies
+- **Lienong Zhang**: PhD student at University of Pittsburgh, Anthropology (the society and technology in Amazon Basin)
+- **Tianyu Yao**: Freshman at Rutgers University, Anthropology
