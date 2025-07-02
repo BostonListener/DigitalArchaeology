@@ -56,12 +56,12 @@ The web interface provides comprehensive parameter editing across all pipeline s
 #### Pipeline Execution Panel
 Execute all pipeline stages with professional action buttons:
 
-![Workflow Panel](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow_panel.png)
+![Workflow Panel](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/working_panel.png)
 
 #### Real-Time Process Monitoring
 Monitor pipeline execution with live console output:
 
-![Workflow Console](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/workflow_console.png)
+![Workflow Console](https://github.com/BostonListener/DualVectorFoil-AI-Archaeology/blob/main/image/working_console.png)
 
 ## Pipeline Workflow
 
