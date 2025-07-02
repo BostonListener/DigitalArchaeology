@@ -1110,20 +1110,20 @@ class OpenAIAnalyzer:
         success_rate = (successful/total*100) if total > 0 else 0
         
         summary = f"""
-OpenAI Integration Summary:
-==========================
-Total Interactions: {total}
-Successful: {successful} ({success_rate:.1f}%)
-Dataset IDs Logged: {len(self.dataset_ids)}
+        OpenAI Integration Summary:
+        ==========================
+        Total Interactions: {total}
+        Successful: {successful} ({success_rate:.1f}%)
+        Dataset IDs Logged: {len(self.dataset_ids)}
 
-Checkpoint Coverage:
-- Checkpoint 1: {checkpoint_counts['CHECKPOINT_1']} interactions
-- Checkpoint 2: {checkpoint_counts['CHECKPOINT_2']} interactions  
-- Checkpoint 3: {checkpoint_counts['CHECKPOINT_3']} interactions
-- Checkpoint 4: {checkpoint_counts['CHECKPOINT_4']} interactions
+        Checkpoint Coverage:
+        - Checkpoint 1: {checkpoint_counts['CHECKPOINT_1']} interactions
+        - Checkpoint 2: {checkpoint_counts['CHECKPOINT_2']} interactions  
+        - Checkpoint 3: {checkpoint_counts['CHECKPOINT_3']} interactions
+        - Checkpoint 4: {checkpoint_counts['CHECKPOINT_4']} interactions
 
-Models Used: {self.model}
-Study Area: {self.study_area['name']}
+        Models Used: {self.model}
+        Study Area: {self.study_area['name']}
         """
         
         return summary.strip()

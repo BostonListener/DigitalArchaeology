@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archaeological Discovery Pipeline</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-search-location"></i>
+                    <h1>Archaeological Discovery Pipeline</h1>
+                    <p class="subtitle">AI-Powered Amazon Archaeological Site Detection</p>
+                </div>
+                <div class="status-panel">
+                    <div class="status-item" id="connection-status">
+                        <i class="fas fa-circle"></i>
+                        <span>Connecting...</span>
+                    </div>
+                    <div class="status-item" id="pipeline-status">
+                        <i class="fas fa-cog"></i>
+                        <span>Ready</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Parameter Editor -->
+            <section class="parameter-editor">
+                <h2><i class="fas fa-sliders-h"></i> Pipeline Configuration</h2>
+                
+                <!-- Study Area Configuration -->
+                <div class="config-section">
+                    <h3><i class="fas fa-map-marked-alt"></i> Study Area</h3>
+                    <div class="config-grid">
+                        <div class="input-group">
+                            <label for="study-name">Region Name</label>
+                            <input type="text" id="study-name" name="study_area.name" 
+                                   value="{{ parameters.study_area.name if parameters else 'Acre' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-lon">Min Longitude</label>
+                            <input type="number" id="min-lon" name="study_area.bounds.min_lon" 
+                                   step="0.0001" value="{{ parameters.study_area.bounds.min_lon if parameters else -68.5 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-lon">Max Longitude</label>
+                            <input type="number" id="max-lon" name="study_area.bounds.max_lon" 
+                                   step="0.0001" value="{{ parameters.study_area.bounds.max_lon if parameters else -67.5 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-lat">Min Latitude</label>
+                            <input type="number" id="min-lat" name="study_area.bounds.min_lat" 
+                                   step="0.0001" value="{{ parameters.study_area.bounds.min_lat if parameters else -10.6 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-lat">Max Latitude</label>
+                            <input type="number" id="max-lat" name="study_area.bounds.max_lat" 
+                                   step="0.0001" value="{{ parameters.study_area.bounds.max_lat if parameters else -9.6 }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deforestation Analysis -->
+                <div class="config-section">
+                    <h3><i class="fas fa-tree"></i> Deforestation Analysis</h3>
+                    <div class="config-grid">
+                        <div class="input-group">
+                            <label for="start-year">Start Year</label>
+                            <input type="number" id="start-year" name="deforestation.start_year" 
+                                   value="{{ parameters.deforestation.start_year if parameters else 2010 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="end-year">End Year</label>
+                            <input type="number" id="end-year" name="deforestation.end_year" 
+                                   value="{{ parameters.deforestation.end_year if parameters else 2015 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-age">Min Age (years)</label>
+                            <input type="number" id="min-age" name="deforestation.min_age_years" 
+                                   value="{{ parameters.deforestation.min_age_years if parameters else 10 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-age">Max Age (years)</label>
+                            <input type="number" id="max-age" name="deforestation.max_age_years" 
+                                   value="{{ parameters.deforestation.max_age_years if parameters else 15 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-size">Min Size (ha)</label>
+                            <input type="number" id="min-size" name="deforestation.min_size_ha" 
+                                   step="0.1" value="{{ parameters.deforestation.min_size_ha if parameters else 2.5 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-size">Max Size (ha)</label>
+                            <input type="number" id="max-size" name="deforestation.max_size_ha" 
+                                   value="{{ parameters.deforestation.max_size_ha if parameters else 300 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-bbox-ratio">Max BBox Ratio</label>
+                            <input type="number" id="max-bbox-ratio" name="deforestation.max_bbox_ratio" 
+                                   value="{{ parameters.deforestation.max_bbox_ratio if parameters else 3 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="optimal-size-min">Optimal Size Min (ha)</label>
+                            <input type="number" id="optimal-size-min" name="deforestation.optimal_size_min_ha" 
+                                   value="{{ parameters.deforestation.optimal_size_min_ha if parameters else 3 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="optimal-size-max">Optimal Size Max (ha)</label>
+                            <input type="number" id="optimal-size-max" name="deforestation.optimal_size_max_ha" 
+                                   value="{{ parameters.deforestation.optimal_size_max_ha if parameters else 20 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="optimal-timing-min">Optimal Timing Min (years)</label>
+                            <input type="number" id="optimal-timing-min" name="deforestation.optimal_timing_min_years" 
+                                   value="{{ parameters.deforestation.optimal_timing_min_years if parameters else 4 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="optimal-timing-max">Optimal Timing Max (years)</label>
+                            <input type="number" id="optimal-timing-max" name="deforestation.optimal_timing_max_years" 
+                                   value="{{ parameters.deforestation.optimal_timing_max_years if parameters else 6 }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sentinel-2 Configuration -->
+                <div class="config-section">
+                    <h3><i class="fas fa-satellite"></i> Sentinel-2 Analysis</h3>
+                    <div class="config-grid">
+                        <div class="input-group">
+                            <label for="cloud-threshold">Cloud Cover Threshold (%)</label>
+                            <input type="number" id="cloud-threshold" name="sentinel_download.cloud_cover_threshold" 
+                                   value="{{ parameters.sentinel_download.cloud_cover_threshold if parameters else 75 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="temporal-preference">Temporal Preference</label>
+                            <input type="text" id="temporal-preference" name="sentinel_download.temporal_preference" 
+                                   value="{{ ','.join(parameters.sentinel_download.temporal_preference) if parameters else 'dry_season' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="product-preference">Product Preference</label>
+                            <input type="text" id="product-preference" name="sentinel_download.product_preference" 
+                                   value="{{ parameters.sentinel_download.product_preference if parameters else 'L2A' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-candidates">Max Candidates</label>
+                            <input type="number" id="max-candidates" name="sentinel_download.max_candidates" 
+                                   value="{{ parameters.sentinel_download.max_candidates if parameters else 25 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="buffer-degrees">Buffer (degrees)</label>
+                            <input type="number" id="buffer-degrees" name="sentinel_download.buffer_degrees" 
+                                   step="0.001" value="{{ parameters.sentinel_download.buffer_degrees if parameters else 0.003 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="base-cloud-threshold">Base Cloud Threshold (%)</label>
+                            <input type="number" id="base-cloud-threshold" name="sentinel_analysis.base_params.cloud_cover_threshold" 
+                                   value="{{ parameters.sentinel_analysis.base_params.cloud_cover_threshold if parameters else 70 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-pattern-pixels">Min Pattern Pixels</label>
+                            <input type="number" id="min-pattern-pixels" name="sentinel_analysis.base_params.min_pattern_pixels" 
+                                   value="{{ parameters.sentinel_analysis.base_params.min_pattern_pixels if parameters else 6 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-pattern-hectares">Max Pattern (ha)</label>
+                            <input type="number" id="max-pattern-hectares" name="sentinel_analysis.base_params.max_pattern_hectares" 
+                                   step="0.1" value="{{ parameters.sentinel_analysis.base_params.max_pattern_hectares if parameters else 12.0 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="ndvi-contrast">NDVI Contrast (comma-separated)</label>
+                            <input type="text" id="ndvi-contrast" name="sentinel_analysis.parameter_grid.ndvi_contrast_threshold" 
+                                   value="{{ ','.join(parameters.sentinel_analysis.parameter_grid.ndvi_contrast_threshold|map('string')) if parameters else '0.05,0.08,0.12' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="geometry-threshold">Geometry Threshold (comma-separated)</label>
+                            <input type="text" id="geometry-threshold" name="sentinel_analysis.parameter_grid.geometry_threshold" 
+                                   value="{{ ','.join(parameters.sentinel_analysis.parameter_grid.geometry_threshold|map('string')) if parameters else '0.35,0.50,0.65' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="pattern-pixels-grid">Pattern Pixels Grid (comma-separated)</label>
+                            <input type="text" id="pattern-pixels-grid" name="sentinel_analysis.parameter_grid.min_pattern_pixels" 
+                                   value="{{ ','.join(parameters.sentinel_analysis.parameter_grid.min_pattern_pixels|map('string')) if parameters else '5,7,9' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-pattern-diameter">Min Pattern Diameter (m)</label>
+                            <input type="number" id="min-pattern-diameter" name="sentinel_analysis.min_pattern_diameter_m" 
+                                   value="{{ parameters.sentinel_analysis.min_pattern_diameter_m if parameters else 25 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-pattern-diameter">Max Pattern Diameter (m)</label>
+                            <input type="number" id="max-pattern-diameter" name="sentinel_analysis.max_pattern_diameter_m" 
+                                   value="{{ parameters.sentinel_analysis.max_pattern_diameter_m if parameters else 250 }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DEM Validation -->
+                <div class="config-section">
+                    <h3><i class="fas fa-mountain"></i> Elevation Validation</h3>
+                    <div class="config-grid">
+                        <div class="input-group">
+                            <label for="buffer-distance">Buffer Distance (m)</label>
+                            <input type="number" id="buffer-distance" name="dem_validation.buffer_distance_m" 
+                                   value="{{ parameters.dem_validation.buffer_distance_m if parameters else 100 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="elevation-std">Elevation Std Threshold</label>
+                            <input type="number" id="elevation-std" name="dem_validation.elevation_std_threshold" 
+                                   step="0.1" value="{{ parameters.dem_validation.elevation_std_threshold if parameters else 0.4 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="elevation-range">Elevation Range Threshold</label>
+                            <input type="number" id="elevation-range" name="dem_validation.elevation_range_threshold" 
+                                   step="0.1" value="{{ parameters.dem_validation.elevation_range_threshold if parameters else 1.5 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="roughness-threshold">Roughness Threshold</label>
+                            <input type="number" id="roughness-threshold" name="dem_validation.roughness_threshold" 
+                                   step="0.01" value="{{ parameters.dem_validation.roughness_threshold if parameters else 0.25 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-pixels">Min Pixels</label>
+                            <input type="number" id="min-pixels" name="dem_validation.min_pixels" 
+                                   value="{{ parameters.dem_validation.min_pixels if parameters else 4 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="max-elevation-range">Max Elevation Range</label>
+                            <input type="number" id="max-elevation-range" name="dem_validation.max_elevation_range" 
+                                   step="0.1" value="{{ parameters.dem_validation.max_elevation_range if parameters else 15.0 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="min-elevation-range">Min Elevation Range</label>
+                            <input type="number" id="min-elevation-range" name="dem_validation.min_elevation_range" 
+                                   step="0.1" value="{{ parameters.dem_validation.min_elevation_range if parameters else 0.3 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="patterns-to-validate">Patterns to Validate</label>
+                            <input type="number" id="patterns-to-validate" name="dem_validation.patterns_to_validate" 
+                                   value="{{ parameters.dem_validation.patterns_to_validate if parameters else 35 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="contour-interval">Contour Interval (m)</label>
+                            <input type="number" id="contour-interval" name="dem_validation.contour_interval" 
+                                   step="0.1" value="{{ parameters.dem_validation.contour_interval if parameters else 0.3 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="detailed-interval">Detailed Interval (m)</label>
+                            <input type="number" id="detailed-interval" name="dem_validation.detailed_interval" 
+                                   step="0.1" value="{{ parameters.dem_validation.detailed_interval if parameters else 0.1 }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="map-buffer-distance">Map Buffer Distance (m)</label>
+                            <input type="number" id="map-buffer-distance" name="dem_validation.map_buffer_distance" 
+                                   value="{{ parameters.dem_validation.map_buffer_distance if parameters else 300 }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Paths Configuration -->
+                <div class="config-section">
+                    <h3><i class="fas fa-folder-open"></i> File Paths</h3>
+                    <div class="config-grid">
+                        <div class="input-group">
+                            <label for="input-gpkg">Input GPKG Path</label>
+                            <input type="text" id="input-gpkg" name="paths.input_gpkg" 
+                                   value="{{ parameters.paths.input_gpkg if parameters else 'data/input/prodes_amazonia_legal.gpkg' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-dem-dir">Input DEM Directory</label>
+                            <input type="text" id="input-dem-dir" name="paths.input_dem_dir" 
+                                   value="{{ parameters.paths.input_dem_dir if parameters else 'data/input/FABDEM' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="stage1-dir">Stage 1 Directory</label>
+                            <input type="text" id="stage1-dir" name="paths.stage1_dir" 
+                                   value="{{ parameters.paths.stage1_dir if parameters else 'data/stage1' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="stage2-dir">Stage 2 Directory</label>
+                            <input type="text" id="stage2-dir" name="paths.stage2_dir" 
+                                   value="{{ parameters.paths.stage2_dir if parameters else 'data/stage2' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="stage3-dir">Stage 3 Directory</label>
+                            <input type="text" id="stage3-dir" name="paths.stage3_dir" 
+                                   value="{{ parameters.paths.stage3_dir if parameters else 'data/stage3' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="deforestation-candidates">Deforestation Candidates File</label>
+                            <input type="text" id="deforestation-candidates" name="paths.deforestation_candidates" 
+                                   value="{{ parameters.paths.deforestation_candidates if parameters else 'data/stage1/archaeological_candidates.csv' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="sentinel-queries">Sentinel Queries File</label>
+                            <input type="text" id="sentinel-queries" name="paths.sentinel_queries" 
+                                   value="{{ parameters.paths.sentinel_queries if parameters else 'data/stage1/sentinel2_queries.json' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="downloaded-data">Downloaded Data Directory</label>
+                            <input type="text" id="downloaded-data" name="paths.downloaded_data" 
+                                   value="{{ parameters.paths.downloaded_data if parameters else 'data/stage2/downloads' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="analysis-results">Analysis Results Directory</label>
+                            <input type="text" id="analysis-results" name="paths.analysis_results" 
+                                   value="{{ parameters.paths.analysis_results if parameters else 'data/stage2/analysis' }}">
+                        </div>
+                        <div class="input-group">
+                            <label for="final-sites">Final Sites File</label>
+                            <input type="text" id="final-sites" name="paths.final_sites" 
+                                   value="{{ parameters.paths.final_sites if parameters else 'data/stage3/final_archaeological_sites.csv' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Configuration Button -->
+                <div class="save-section">
+                    <button id="save-config" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </section>
+
+            <!-- Action Panel -->
+            <section class="action-panel">
+                <h2><i class="fas fa-play-circle"></i> Pipeline Actions</h2>
+                <div class="action-grid">
+                    <button id="run-setup" class="action-btn setup-btn">
+                        <i class="fas fa-cog"></i>
+                        <span class="btn-text">Run Setup</span>
+                        <span class="btn-desc">Initialize directories & validate config</span>
+                    </button>
+                    <button id="run-pipeline" class="action-btn pipeline-btn">
+                        <i class="fas fa-rocket"></i>
+                        <span class="btn-text">Run Pipeline</span>
+                        <span class="btn-desc">Execute full detection workflow</span>
+                    </button>
+                    <button id="run-checkpoint" class="action-btn checkpoint-btn">
+                        <i class="fas fa-flag-checkered"></i>
+                        <span class="btn-text">Run Checkpoint</span>
+                        <span class="btn-desc">Validate competition compliance</span>
+                    </button>
+                    <button id="run-visualization" class="action-btn viz-btn">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="btn-text">Run Visualization</span>
+                        <span class="btn-desc">Generate site visualizations</span>
+                    </button>
+                </div>
+                <div class="control-buttons">
+                    <button id="stop-script" class="btn btn-danger" disabled>
+                        <i class="fas fa-stop"></i> Stop Current Script
+                    </button>
+                </div>
+            </section>
+
+            <!-- Output Console -->
+            <section class="output-console">
+                <h2><i class="fas fa-terminal"></i> Console Output</h2>
+                <div class="console-container">
+                    <div id="console-output" class="console-content">
+                        <div class="console-line welcome">
+                            <span class="timestamp">[00:00:00]</span>
+                            <span class="message">Archaeological Pipeline Interface Ready</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="console-controls">
+                    <button id="clear-console" class="btn btn-secondary">
+                        <i class="fas fa-trash"></i> Clear Console
+                    </button>
+                    <button id="toggle-auto-scroll" class="btn btn-secondary active">
+                        <i class="fas fa-arrow-down"></i> Auto Scroll
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notifications" class="notifications"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
