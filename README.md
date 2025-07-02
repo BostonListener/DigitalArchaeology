@@ -31,7 +31,7 @@ version = {1.0.0},
 year = {2025}
 }
 
-## 🆕 Web Interface
+## Web Interface
 
 We've developed a beautiful, archaeology-themed web interface that makes the pipeline accessible to non-technical users. The interface provides visual parameter editing and real-time pipeline monitoring without requiring manual YAML file editing.
 
