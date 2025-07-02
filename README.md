@@ -25,7 +25,7 @@ author = {Li, Linduo and Wang, Zifeng},
 doi = {10.5281/zenodo.1234},
 month = jun,
 title = {{DualVectorFoil-AI-Archaeology}},
-url = {https://github.com/BostonListener/DualVectorFoil-AI-Archaeology},
+url = { https://github.com/BostonListener/DualVectorFoil-AI-Archaeology },
 version = {1.0.0},
 year = {2025}
 }
